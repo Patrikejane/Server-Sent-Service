@@ -10,13 +10,15 @@ import com.loollablk.sseservice.SseSession;
 import com.loollablk.sseservice.exception.SseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 
 /**
- * SseService implementation
+ *  * SseService implementation
  */
+@Service
 public class SseServiceImpl implements SseService{
 
     private static final Logger log = LoggerFactory.getLogger(SseServiceImpl.class);

@@ -49,8 +49,8 @@ public class SseSession {
         }
     }
 
-    public static void send(String sessionKey,String content) throws IOException {
-        sseSessionMap.get(sessionKey).send(content);
+    public static void send(String sessionId,String content) throws IOException {
+        sseSessionMap.get(sessionId).send(content);
     }
 
 

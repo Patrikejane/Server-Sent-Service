@@ -15,17 +15,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.awt.*;
+import java.time.LocalTime;
 
 @RestController
-@RequestMapping(value = "sse")
+@RequestMapping(value = "/sse")
 @ResponseBody
+@CrossOrigin
 public class sseController {
 
 
     @Autowired
     private SseService sseService;
 
-    @GetMapping(value = "/suscribe/{seesionId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "/subscribe/{sessionId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe(@PathVariable("sessionId") String sessionId){
         try {
             return sseService.connect(sessionId);
@@ -34,7 +36,16 @@ public class sseController {
         }
     }
 
-    @PostMapping(value = "/send/{seesionId}")
+
+    @GetMapping(value = "/events", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @ResponseBody
+    public String streamEvents() {
+        return "data:" + LocalTime.now() + "\n\n";
+    }
+
+
+
+    @PostMapping(value = "/send/{sessionId}")
     public String sendMessage(@PathVariable("sessionId") String sessionId ,@RequestBody MessageReq MegRequest)  {
         try {
             if(sseService.send(MegRequest.getSeesionId(), MegRequest.getMessageDetail())){
@@ -47,9 +58,14 @@ public class sseController {
     }
 
 
-    @GetMapping(value = "/close/{seesionId}")
+    @GetMapping(value = "/close/{sessionId}")
     public void close(@PathVariable("sessionId") String sessionId){
         sseService.closeConnection(sessionId);
+    }
+
+    @GetMapping(value = "/home")
+    public String home(){
+        return "Home";
     }
 
 
